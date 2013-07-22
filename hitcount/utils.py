@@ -20,7 +20,7 @@ def get_ip(request):
     # if neither header contain a value, just use local loopback
     ip_address = request.META.get('HTTP_X_FORWARDED_FOR',
                                   request.META.get('REMOTE_ADDR', '127.0.0.1'))
-    if ip_address:
+    if ip_address is not None:
         # make sure we have one and only one IP
         try:
             ip_address = IP_RE.match(ip_address)
@@ -29,8 +29,11 @@ def get_ip(request):
             else:
                 # no IP, probably from some dirty proxy or other device
                 # throw in some bogus IP
-                ip_address = '10.0.0.1'
+                ip_address = 'unknown'
         except IndexError:
             pass
+    else:
+        ip_address = 'unknown'
+
 
     return ip_address

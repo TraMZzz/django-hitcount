@@ -49,7 +49,7 @@ def _update_hit_count(request, hitcount):
     # create a generic Hit object with request data
     hit = Hit(  session=session_key,
                 hitcount=hitcount,
-                ip=get_ip(request),
+                ip=ip,
                 user_agent=request.META.get('HTTP_USER_AGENT', '')[:255],)
 
     # first, use a user's authentication to see if they made an earlier hit
